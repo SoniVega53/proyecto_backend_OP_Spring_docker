@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM eclipse-temurin:21-jdk
 
 EXPOSE 9090
 
@@ -8,7 +8,9 @@ COPY ./pom.xml /root
 COPY ./.mvn /root/.mvn
 COPY ./mvnw /root
 
+RUN chmod +x mvnw
 RUN ./mvnw dependency:go-offline
+
 
 COPY ./src /root/src
 
