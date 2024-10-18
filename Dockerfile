@@ -1,5 +1,17 @@
 FROM openjdk:17
-COPY "./target/grupo_umg2024-1.0.0.jar" "app.jar"
-EXPOSE 9090
-ENTRYPOINT ["java", "-jar", "app.jar"]
 
+EXPOSE 9090
+
+WORKDIR /root
+
+COPY ./pom.xml /root
+COPY ./.mvn /root/.mvn
+COPY ./mvnw /root
+
+RUN ./mvnw dependency:go-offline
+
+COPY ./src /root/src
+
+RUN ./mvnw clean install -DskipTests
+
+ENTRYPOINT ["java", "-jar", "/root/target/grupo_umg2024-1.0.0.jar"]
